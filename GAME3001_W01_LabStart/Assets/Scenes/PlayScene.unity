@@ -649,6 +649,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  Island: {fileID: 1386734514}
+  endSceneIslandDistance: 1
 --- !u!1001 &1787871154
 PrefabInstance:
   m_ObjectHideFlags: 0
