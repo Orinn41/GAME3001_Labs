@@ -41,7 +41,6 @@ public class ClickAndDrag : MonoBehaviour
             isDragging = false;
         }
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        currentlyDragObject.MovePosition(mousePosition + offset);
+        //currentlyDragObject.MovePosition(mousePosition + offset);
     }
 }

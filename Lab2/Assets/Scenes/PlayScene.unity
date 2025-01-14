@@ -492,10 +492,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 954246355}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71634642f0996094da83b37b5f716ba1, type: 3}
+  m_Script: {fileID: 11500000, guid: b3601f82cd526954ca1bd1c935bee296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Target: {fileID: 126501187}
+  movementSpeed: 0
+  rotationSPeed: 0
 --- !u!1001 &1699967414
 PrefabInstance:
   m_ObjectHideFlags: 0
