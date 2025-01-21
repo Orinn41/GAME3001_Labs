@@ -40,7 +40,11 @@ public class ClickAndDrag : MonoBehaviour
             currentlyDragObject = null;
             isDragging = false;
         }
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //currentlyDragObject.MovePosition(mousePosition + offset);
+        if (isDragging)
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            currentlyDragObject.MovePosition(mousePosition + offset);
+
+        }
     }
 }

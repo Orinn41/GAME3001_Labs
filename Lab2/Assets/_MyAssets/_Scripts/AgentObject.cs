@@ -5,6 +5,7 @@ using UnityEngine;
 public class AgentObject : MonoBehaviour
 {
     [SerializeField]
+
     Transform m_Target;
     public Vector3 TargetPosition
     { 
@@ -12,8 +13,9 @@ public class AgentObject : MonoBehaviour
         set { m_Target.position = value; }
     }
     // Start is called before the first frame update
-    void Start()
+     public void Start()
     {
+        Debug.Log("Starting Agent....");
         TargetPosition = m_Target.position;
     }
 
