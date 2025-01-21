@@ -224,13 +224,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Starship Parent
       objectReference: {fileID: 0}
+    - target: {fileID: 6580887675407599656, guid: 24fe13f212ff35d4da5de9817b95fadb, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6580887675407599656, guid: 24fe13f212ff35d4da5de9817b95fadb, type: 3}
+      propertyPath: m_Simulated
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7001827523004621720, guid: 24fe13f212ff35d4da5de9817b95fadb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.83
+      value: -4.51
       objectReference: {fileID: 0}
     - target: {fileID: 7001827523004621720, guid: 24fe13f212ff35d4da5de9817b95fadb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.71
+      value: -0.95
       objectReference: {fileID: 0}
     - target: {fileID: 7001827523004621720, guid: 24fe13f212ff35d4da5de9817b95fadb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -496,8 +504,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Target: {fileID: 126501187}
-  movementSpeed: 0
-  rotationSPeed: 0
+  movementSpeed: 2
+  rotationSpeed: 1
 --- !u!1001 &1699967414
 PrefabInstance:
   m_ObjectHideFlags: 0

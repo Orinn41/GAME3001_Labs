@@ -7,7 +7,7 @@ public class Starship : AgentObject
     [SerializeField]
     float movementSpeed;
     [SerializeField]
-    float rotationSPeed;
+    float rotationSpeed;
 
     private Rigidbody2D rb;
     // Start is called before the first frame update
@@ -23,7 +23,8 @@ public class Starship : AgentObject
     {
         if(TargetPosition != null)
         {
-            Seek();
+            // Seek();
+            SeekForward();
         }
     }
 
@@ -39,5 +40,22 @@ public class Starship : AgentObject
         //rb.velocity = desiredVelocity;
         //Apply the steering force to the agent 
         rb.AddForce(steeringForce);
+    }
+
+    private void SeekForward() // A seek with rotation to target but only moving aling forward vector 
+    {
+        //Cccalculate direction to target 
+        Vector2 direction = (TargetPosition - transform.position).normalized;
+        //Calculate the angle to rotate towards the target
+        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90.0f;
+
+        //Smmothly rotate towards to target 
+        float angleDifference = Mathf.DeltaAngle(targetAngle, transform.eulerAngles.z);
+        float rotationStep = rotationSpeed * Time.deltaTime;
+        float rotationAmount = Mathf.Clamp(angleDifference, -rotationStep, rotationStep);
+        transform.Rotate(Vector3.forward, rotationAmount);
+
+        //Move along the forward vector using rigidbody2D
+        rb.velocity = transform.up * movementSpeed;
     }
 }
