@@ -230,7 +230,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6580887675407599656, guid: 24fe13f212ff35d4da5de9817b95fadb, type: 3}
       propertyPath: m_Simulated
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7001827523004621720, guid: 24fe13f212ff35d4da5de9817b95fadb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -504,8 +504,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Target: {fileID: 126501187}
-  movementSpeed: 2
-  rotationSpeed: 1
+  movementSpeed: 6
+  rotationSpeed: 50
 --- !u!1001 &1699967414
 PrefabInstance:
   m_ObjectHideFlags: 0
