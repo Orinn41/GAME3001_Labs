@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ResetScale : MonoBehaviour
 {
-    private Vector3 defaultScale = new Vector3 (2f, 2f, 2f);
+    private Vector3 defaultScale = new Vector3(2f, 2f, 2f);
 
     private void Awake()
     {
@@ -15,12 +15,12 @@ public class ResetScale : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

@@ -35,7 +35,7 @@ public class GameController : MonoBehaviour
     void StartSeeking()
     {
         characterInstance = Instantiate(characterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        targetInstance = Instantiate(targetPrefab, new Vector3(5,0, 5), Quaternion.identity);
+        targetInstance = Instantiate(targetPrefab, new Vector3(5,0, 0), Quaternion.identity);
         characterInstance.SetActive(true);
         targetInstance.SetActive(true);
         characterInstance.GetComponent<SeekingBehavior>().target = targetInstance.transform;
@@ -43,7 +43,7 @@ public class GameController : MonoBehaviour
     void StartFleeing()
     {
         characterInstance = Instantiate(characterPrefab, new Vector3(0,0,0), Quaternion.identity);
-        enemyInstance = Instantiate(enemyPrefab, new Vector3(5, 0, 5),Quaternion.identity);
+        enemyInstance = Instantiate(enemyPrefab, new Vector3(5, 0, 0),Quaternion.identity);
         characterInstance.SetActive(true);
         enemyInstance.SetActive(true);
         characterInstance.GetComponent<FleeingBehavior>().enemy = enemyInstance.transform;
@@ -52,7 +52,7 @@ public class GameController : MonoBehaviour
     void StartArrival()
     {
         characterInstance = Instantiate(characterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        targetInstance = Instantiate(targetPrefab, new Vector3(5, 0, 5), Quaternion.identity);
+        targetInstance = Instantiate(targetPrefab, new Vector3(5, 0, 0), Quaternion.identity);
         characterInstance.SetActive(true);
         targetInstance.SetActive(true);
         characterInstance.GetComponent<ArrivalBehavior>().target = targetInstance.transform;
@@ -60,8 +60,8 @@ public class GameController : MonoBehaviour
     void StartAvoidance()
     {
         characterInstance = Instantiate(characterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        targetInstance = Instantiate(targetPrefab, new Vector3(5, 0, 5), Quaternion.identity);
-        enemyInstance = Instantiate(enemyPrefab, new Vector3(2, 0, 2), Quaternion.identity);
+        targetInstance = Instantiate(targetPrefab, new Vector3(5, 0, 0), Quaternion.identity);
+        enemyInstance = Instantiate(enemyPrefab, new Vector3(2, 0, 0), Quaternion.identity);
         characterInstance.SetActive(true);
         enemyInstance.SetActive(true);
         targetInstance.SetActive(true);

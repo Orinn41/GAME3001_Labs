@@ -23,9 +23,10 @@ public class ArrivalBehavior : MonoBehaviour
             {
                 currentSpeed = Mathf.Lerp(0, speed, distnace /  arrivalDisctance);
             }
-            Vector3 direction = (target.position - transform.position).normalized;
-            transform.position += direction * currentSpeed * Time.deltaTime;
-            transform.rotation = Quaternion.LookRotation(direction);
+            Vector2 direction = (target.position - transform.position).normalized;
+            transform.position = Vector2.MoveTowards(transform.position, (Vector2)transform.position + direction, currentSpeed * Time.deltaTime);
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(new Vector3(0,0,angle));
         }
     }
 }

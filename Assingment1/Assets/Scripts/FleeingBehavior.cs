@@ -15,9 +15,10 @@ public class FleeingBehavior : MonoBehaviour
     {
         if (enemy != null)
         {
-            Vector3 direction = (transform.position - enemy.position).normalized;
-            transform.position += direction * speed * Time.deltaTime;
-            transform.rotation = Quaternion.LookRotation(direction);
+            Vector2 direction = (transform.position - enemy.position).normalized;
+            transform.position = Vector2.MoveTowards(transform.position, (Vector2)transform.position + direction, speed * Time.deltaTime);
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
         }
     }
 }

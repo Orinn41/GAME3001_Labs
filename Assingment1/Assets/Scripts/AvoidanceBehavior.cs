@@ -17,13 +17,14 @@ public class AvoidanceBehavior : MonoBehaviour
     {
         if (target != null &&  enemy != null)
         {
-            Vector3 direction = (target.position - transform.position).normalized;
-            if (Vector3.Distance(transform.position, enemy.position) < avoidDistance)
+            Vector2 direction = (target.position - transform.position).normalized;
+            if (Vector2.Distance(transform.position, enemy.position) < avoidDistance)
             {
                 direction = (transform.position - enemy.position).normalized;
             }
-            transform.position += direction * speed * Time.deltaTime;
-            transform.rotation = Quaternion.LookRotation(direction);
+            transform.position = Vector2.MoveTowards(transform.position, transform.position + (Vector3)direction, speed * Time.deltaTime);
+            float angle = Mathf.Atan2(direction.y, direction.x);
+            transform.rotation = Quaternion.Euler(new Vector3(0,0,angle)); 
         }
     }
 }
