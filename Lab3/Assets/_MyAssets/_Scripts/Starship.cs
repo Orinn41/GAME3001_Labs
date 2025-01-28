@@ -11,6 +11,7 @@ public class Starship : AgentObject
     [SerializeField] float whiskerLenght;
     [SerializeField] float whiskerAngle;
     [SerializeField] float avoidanceWeight;
+    [SerializeField] LayerMask whiskerLayer;
     private Rigidbody2D rb;
 
     new void Start() // Note the new.
@@ -73,7 +74,7 @@ public class Starship : AgentObject
         Vector2 whiskerDirection = Quaternion.Euler(0,0,angle) * transform.up;
 
         // Cast a ray in the whisker direction 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, whiskerDirection, whiskerLenght);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, whiskerDirection, whiskerLenght, whiskerLayer);
         // Check if the ray hits an obstacle 
         if (hit.collider != null)
         {
