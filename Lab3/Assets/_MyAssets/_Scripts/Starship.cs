@@ -8,9 +8,9 @@ public class Starship : AgentObject
     [SerializeField] float movementSpeed;
     [SerializeField] float rotationSpeed;
     // Add fields for whisper length, angle and avoidance weight.
-    //
-    //
-    //
+    [SerializeField] float whiskerLenght;
+    [SerializeField] float whiskerAngle;
+    [SerializeField] float avoidanceWeight;
     private Rigidbody2D rb;
 
     new void Start() // Note the new.
@@ -27,14 +27,16 @@ public class Starship : AgentObject
             // Seek();
             SeekForward();
             // Add call to AvoidObstacles.
-            //
+            AvoidObstacles();
         }
     }
 
     private void AvoidObstacles()
     {
-        // Cast whiskers to detect obstacles.
-        //
+        // Seek();
+        CastWhisker(whiskerAngle, Color.red);
+        CastWhisker(-whiskerAngle, Color.blue);
+
         //
 
         // Adjust rotation based on detected obstacles.
@@ -63,7 +65,26 @@ public class Starship : AgentObject
     }
 
     // Add CastWhisker method. I removed it entirely.
-    //
+    private bool CastWhisker(float angle, Color color)
+    {
+        bool hitResult = false;
+        Color rayColor = color;
+        // Calculate the direction of the whisker
+        Vector2 whiskerDirection = Quaternion.Euler(0,0,angle) * transform.up;
+
+        // Cast a ray in the whisker direction 
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, whiskerDirection, whiskerLenght);
+        // Check if the ray hits an obstacle 
+        if (hit.collider != null)
+        {
+            Debug.Log("Obstacle detected!");
+            rayColor = Color.green;
+            hitResult = true;
+        }
+        Debug.DrawRay(transform.position, whiskerDirection * whiskerLenght, rayColor);
+
+        return hitResult;
+    }
     //
     //
     //
