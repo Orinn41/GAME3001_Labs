@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Starship : AgentObject
@@ -35,34 +36,32 @@ public class Starship : AgentObject
     private void AvoidObstacles()
     {
         // Seek();
-        CastWhisker(whiskerAngle, Color.red);
-        CastWhisker(-whiskerAngle, Color.blue);
-
-        //
+       bool hitRight = CastWhisker(whiskerAngle, Color.red);
+       bool hitLeft = CastWhisker(-whiskerAngle, Color.blue);
 
         // Adjust rotation based on detected obstacles.
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-        //
+        if(hitLeft)
+        {
+            RotateCounterClockwise();
+        }
+        else if(hitRight)
+        {
+            RotateClockwise();
+        }
+       
     }
 
     private void RotateCounterClockwise()
     {
         // Rotate counterclockwise based on rotationSpeed and a weight.
-        // 
+        transform.Rotate(Vector3.forward, rotationSpeed * avoidanceWeight * Time.deltaTime);
     }
 
     private void RotateClockwise()
     {
         // Rotate clockwise based on rotationSpeed and a weight.
-        // 
+        transform.Rotate(Vector3.forward, -rotationSpeed * avoidanceWeight * Time.deltaTime);   
+            
     }
 
     // Add CastWhisker method. I removed it entirely.

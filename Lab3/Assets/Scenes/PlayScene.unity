@@ -341,7 +341,7 @@ GameObject:
   - component: {fileID: 1011901756}
   - component: {fileID: 1011901758}
   - component: {fileID: 1011901757}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: planet
   m_TagString: Target
   m_Icon: {fileID: 0}
@@ -500,7 +500,7 @@ GameObject:
   - component: {fileID: 1557970010}
   - component: {fileID: 1557970009}
   - component: {fileID: 1557970011}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Starship Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -522,9 +522,12 @@ MonoBehaviour:
   m_target: {fileID: 1011901755}
   movementSpeed: 3
   rotationSpeed: 60
-  whiskerLenght: 5
+  whiskerLenght: 2
   whiskerAngle: 45
-  avoidanceWeight: 0
+  avoidanceWeight: 3
+  whiskerLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!4 &1557970008
 Transform:
   m_ObjectHideFlags: 0
@@ -719,7 +722,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1745858550}
   - component: {fileID: 1745858549}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: u.s.s. jammie dodger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -956,6 +959,10 @@ PrefabInstance:
     - target: {fileID: 306936759244331215, guid: 704c9d449e43fea4d8d50f6837f8909d, type: 3}
       propertyPath: m_Name
       value: nebula_cloud
+      objectReference: {fileID: 0}
+    - target: {fileID: 306936759244331215, guid: 704c9d449e43fea4d8d50f6837f8909d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2270385348435787806, guid: 704c9d449e43fea4d8d50f6837f8909d, type: 3}
       propertyPath: m_LocalPosition.x
