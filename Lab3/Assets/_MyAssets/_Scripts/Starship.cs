@@ -13,6 +13,8 @@ public class Starship : AgentObject
     [SerializeField] float whiskerAngle;
     [SerializeField] float avoidanceWeight;
     [SerializeField] LayerMask whiskerLayer;
+    [SerializeField] float whiskerAngle2;
+    [SerializeField] float whiskerLenght2;
     private Rigidbody2D rb;
 
     new void Start() // Note the new.
@@ -36,15 +38,17 @@ public class Starship : AgentObject
     private void AvoidObstacles()
     {
         // Seek();
+        bool hitUp = CastWhisker(whiskerAngle2, Color.cyan);
+        bool hitDown = CastWhisker(-whiskerAngle2,Color.white);
        bool hitRight = CastWhisker(whiskerAngle, Color.red);
        bool hitLeft = CastWhisker(-whiskerAngle, Color.blue);
-
+        
         // Adjust rotation based on detected obstacles.
-        if(hitLeft)
+        if(hitLeft || hitUp)
         {
             RotateCounterClockwise();
         }
-        else if(hitRight)
+        else if(hitRight || hitDown)
         {
             RotateClockwise();
         }

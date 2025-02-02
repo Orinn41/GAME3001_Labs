@@ -528,6 +528,8 @@ MonoBehaviour:
   whiskerLayer:
     serializedVersion: 2
     m_Bits: 64
+  whiskerAngle2: 155
+  whiskerLenght2: 2
 --- !u!4 &1557970008
 Transform:
   m_ObjectHideFlags: 0
