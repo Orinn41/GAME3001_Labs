@@ -4,10 +4,14 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - characterPrefab: {fileID: 7648945330259755289, guid: 2e9d5b4b8f3fdf44983124df2e03c355, type: 3}
-  - targetPrefab: {fileID: 1179657158458942298, guid: 40365a8761ea40d4c8b762cfcddb7d21, type: 3}
-  - enemyPrefab: {fileID: 5428292588360911448, guid: 840555cd872e5904da6c31289f11e698, type: 3}
-  - obstaclePrefab: {fileID: 7689712675855624861, guid: 1338dd55df6d2834393e9bb096475bfb, type: 3}
+  - object0: {fileID: 3042912836575909125, guid: 2e9d5b4b8f3fdf44983124df2e03c355, type: 3}
+  - object1: {fileID: 3651097851876994590, guid: 40365a8761ea40d4c8b762cfcddb7d21, type: 3}
+  - object2: {fileID: 7178758452160619014, guid: 840555cd872e5904da6c31289f11e698, type: 3}
+  - object3: {fileID: 8498984180767728746, guid: 1338dd55df6d2834393e9bb096475bfb, type: 3}
+  - characterPrefab: {fileID: 3042912836575909125, guid: 2e9d5b4b8f3fdf44983124df2e03c355, type: 3}
+  - targetPrefab: {fileID: 3651097851876994590, guid: 40365a8761ea40d4c8b762cfcddb7d21, type: 3}
+  - enemyPrefab: {fileID: 7178758452160619014, guid: 840555cd872e5904da6c31289f11e698, type: 3}
+  - obstaclePrefab: {fileID: 8498984180767728746, guid: 1338dd55df6d2834393e9bb096475bfb, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
