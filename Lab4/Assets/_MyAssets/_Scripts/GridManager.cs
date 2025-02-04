@@ -25,7 +25,7 @@ public class GridManager : MonoBehaviour
 {
     // Fill in for Lab 4 Part 1.
     [SerializeField]
-    private GameObject titlePrefab;
+    private GameObject tilePrefab;
     [SerializeField]
     private GameObject minePrefab;
     [SerializeField]
@@ -56,14 +56,38 @@ public class GridManager : MonoBehaviour
     {
         // Fill in for Lab 4 Part 1.
         BuildGrid();
+        ConnectGrid();
     }
 
     void Update()
     {
         // Fill in for Lab 4 Part 1.
-        //
-        //
-        //
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            foreach(Transform child in transform)
+            {
+                child.gameObject.SetActive(!child.gameObject.activeSelf); // toggle tiles
+            }
+            if(Input.GetKeyDown(KeyCode.M))
+            {
+                Vector2 gridPosition = GetGridPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                GameObject mineInst =Instantiate(minePrefab, new Vector3(gridPosition.x, gridPosition.y, 0f), Quaternion.identity);
+                mineInst.GetComponent<NavigationObject>().SetGridIndex();
+                Vector2 mineIndex = mineInst.GetComponent<NavigationObject>().GetGridIndex();
+                grid[(int)mineIndex.y, (int)mineIndex.x].GetComponent<TileScript>().ToggleImpassable();
+                mines.Add(mineInst);
+            }
+            if(Input.GetKeyDown(KeyCode.C))
+            {
+                foreach(GameObject mine in mines)
+                {
+                    Vector2 mineIndex = mine.GetComponent<NavigationObject>().GetGridIndex();
+                    grid[(int)mineIndex.y, (int)mineIndex.x].GetComponent<TileScript>().ToggleImpassable(false);
+                    Destroy(mine);
+                }
+                mines.Clear();
+            }
+        }
     }
 
     private void BuildGrid()
@@ -76,7 +100,7 @@ public class GridManager : MonoBehaviour
             float colPos = -7.5f;
             for (int col =0; columns < col++; colPos++)
             {
-                GameObject tileInst = GameObject.Instantiate(titlePrefab, new Vector3(colPos, rowPos, 0f), Quaternion.identity);
+                GameObject tileInst = GameObject.Instantiate(tilePrefab, new Vector3(colPos, rowPos, 0f), Quaternion.identity);
                 tileInst.GetComponent<TileScript>().SetColor(colors[System.Convert.ToInt32((count ++ %2 == 0))]);
                 tileInst.transform.parent = transform;
                 grid[row, col] = tileInst;
@@ -122,7 +146,7 @@ public class GridManager : MonoBehaviour
         // Fix for Lab 4 Part 1.
         //
         // return grid;
-        return null;
+        return grid;
     }
 
     // The following utility function creates the snapping to the center of a tile.
