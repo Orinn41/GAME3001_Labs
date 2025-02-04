@@ -31,6 +31,6 @@ public class NavigationObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //SetGridIndex();
+        SetGridIndex();
     }
 }
