@@ -7,6 +7,8 @@ public class TileScript : MonoBehaviour
     [SerializeField] private GameObject[] neighbourTiles;
     [SerializeField] private Color original;
     public TileStatus status = TileStatus.UNVISITED;
+    public TilePanelScript tilePanel; //Used only for UI
+    public float cost = 999.9f;
     
     public void SetNeighbourTile(int index, GameObject tile)
     {
