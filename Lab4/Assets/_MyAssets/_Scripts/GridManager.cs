@@ -27,6 +27,10 @@ public class GridManager : MonoBehaviour
     [SerializeField]
     private GameObject tilePrefab;
     [SerializeField]
+    private GameObject tilePanelPrefab;
+    [SerializeField]
+    private GameObject tilePanelParent;
+    [SerializeField]
     private GameObject minePrefab;
     [SerializeField]
     private Color[] colors;
@@ -74,7 +78,7 @@ public class GridManager : MonoBehaviour
                 GameObject mineInst =Instantiate(minePrefab, new Vector3(gridPosition.x, gridPosition.y, 0f), Quaternion.identity);
                 mineInst.GetComponent<NavigationObject>().SetGridIndex();
                 Vector2 mineIndex = mineInst.GetComponent<NavigationObject>().GetGridIndex();
-                grid[(int)mineIndex.y, (int)mineIndex.x].GetComponent<TileScript>().ToggleImpassable();
+                grid[(int)mineIndex.y, (int)mineIndex.x].GetComponent<TileScript>().SetStatus(TileStatus.IMPASSABLE);
                 mines.Add(mineInst);
             }
             if(Input.GetKeyDown(KeyCode.C))
@@ -82,7 +86,7 @@ public class GridManager : MonoBehaviour
                 foreach(GameObject mine in mines)
                 {
                     Vector2 mineIndex = mine.GetComponent<NavigationObject>().GetGridIndex();
-                    grid[(int)mineIndex.y, (int)mineIndex.x].GetComponent<TileScript>().ToggleImpassable(false);
+                    grid[(int)mineIndex.y, (int)mineIndex.x].GetComponent<TileScript>().SetStatus(TileStatus.UNVISITED);
                     Destroy(mine);
                 }
                 mines.Clear();
@@ -101,9 +105,17 @@ public class GridManager : MonoBehaviour
             for (int col =0; columns < col++; colPos++)
             {
                 GameObject tileInst = GameObject.Instantiate(tilePrefab, new Vector3(colPos, rowPos, 0f), Quaternion.identity);
-                tileInst.GetComponent<TileScript>().SetColor(colors[System.Convert.ToInt32((count ++ %2 == 0))]);
+                TileScript tileScript = tileInst.GetComponent<TileScript>();
+                tileScript.SetColor(colors[System.Convert.ToInt32((count ++ %2 == 0))]);
                 tileInst.transform.parent = transform;
                 grid[row, col] = tileInst;
+                //Instantiate a new TilePanel and lint it to the tile Instance
+                GameObject panelInst = Instantiate(tilePanelPrefab, tilePanelPrefab.transform.position, Quaternion.identity);  
+                panelInst.transform.parent = tilePanelParent.transform;
+                RectTransform panelTransform = panelInst.GetComponent<RectTransform>();
+                panelTransform.localScale = new Vector3 (1f,1f,1f);
+                panelTransform.anchoredPosition = new Vector3(64f *col, -64 * row);
+                tileScript.tilePanel = panelInst.GetComponent<TilePanelScript>();
             }
         }
         count--;

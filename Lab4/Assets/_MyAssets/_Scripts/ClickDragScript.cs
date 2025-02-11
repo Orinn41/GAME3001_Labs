@@ -30,7 +30,7 @@ public class ClickDragScript : MonoBehaviour
                     if(currentlyDraggedObject.gameObject.tag == "Mines") // we can grap and drag the mines
                     {
                         Vector2 mineIndex = currentlyDraggedObject.gameObject.GetComponent<NavigationObject>().GetGridIndex();
-                        GridManager.Instance.GetGrid()[(int)mineIndex.y, (int)mineIndex.x].GetComponent<TileScript>().ToggleImpassable(false);
+                        GridManager.Instance.GetGrid()[(int)mineIndex.y, (int)mineIndex.x].GetComponent<TileScript>().SetStatus(TileStatus.UNVISITED);
                     }
                     //
                     //
@@ -44,7 +44,7 @@ public class ClickDragScript : MonoBehaviour
             if(currentlyDraggedObject.gameObject.tag == "Mines")
             {
                 Vector2 mineIndex = currentlyDraggedObject.gameObject.GetComponent<NavigationObject>().GetGridIndex();
-                GridManager.Instance.GetGrid()[(int)mineIndex.y, (int)mineIndex.x].GetComponent<TileScript>().ToggleImpassable(true);
+                GridManager.Instance.GetGrid()[(int)mineIndex.y, (int)mineIndex.x].GetComponent<TileScript>().SetStatus(TileStatus.IMPASSABLE);
             }
             // Stop dragging.
             isDragging = false;
