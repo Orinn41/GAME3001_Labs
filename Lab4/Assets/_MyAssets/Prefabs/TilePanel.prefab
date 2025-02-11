@@ -50,8 +50,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a093680b9805ae14483ac4d371d95c0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusText: {fileID: 0}
-  cosText: {fileID: 0}
+  statusText: {fileID: 4056153043258226146}
+  cosText: {fileID: 4487366214957470980}
 --- !u!1 &5690321312249557825
 GameObject:
   m_ObjectHideFlags: 0
