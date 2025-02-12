@@ -99,29 +99,26 @@ public class GridManager : MonoBehaviour
         grid = new GameObject[rows, columns];
         int count = 0;
         float rowPos = 5.5f;
-        for (int row =0; row < row++; rowPos--)
+        for (int row =0; row < rows; row++, rowPos--)
         {
             float colPos = -7.5f;
             for (int col =0; columns < col++; colPos++)
             {
                 GameObject tileInst = GameObject.Instantiate(tilePrefab, new Vector3(colPos, rowPos, 0f), Quaternion.identity);
-                TileScript tileScript = tileInst.GetComponent<TileScript>();
-                tileScript.SetColor(colors[System.Convert.ToInt32((count ++ %2 == 0))]);
+                tileInst.GetComponent<TileScript>().SetColor(colors[System.Convert.ToInt32(count++ %2 == 0)]);
                 tileInst.transform.parent = transform;
                 grid[row, col] = tileInst;
-                //Instantiate a new TilePanel and lint it to the tile Instance
-                GameObject panelInst = Instantiate(tilePanelPrefab, tilePanelPrefab.transform.position, Quaternion.identity);  
-                panelInst.transform.parent = tilePanelParent.transform;
-                RectTransform panelTransform = panelInst.GetComponent<RectTransform>();
-                panelTransform.localScale = new Vector3 (1f,1f,1f);
-                panelTransform.anchoredPosition = new Vector3(64f *col, -64 * row);
-                tileScript.tilePanel = panelInst.GetComponent<TilePanelScript>();
+                GameObject tilePanelInst = Instantiate(tilePrefab, tilePanelPrefab.transform.position
             }
+            count--;
         }
-        count--;
+        
             
     }
-
+    // Set the tile under the ship to start
+   // GameObject ship = GameObject.FindGameObjectWithTag("Ship");
+    //Vector2 shipIndices = ship.GetComponent<NavigationObject>().GetGridIndex;
+    
     private void ConnectGrid()
     {
         // Fill in for Lab 4 Part 1.

@@ -21,7 +21,10 @@ public class TileScript : MonoBehaviour
             original = color;
         gameObject.GetComponent<SpriteRenderer>().color = color;
     }
-
+    public void UpdateText()
+    {
+      
+    }
     public void SetStatus(TileStatus stat)
     {
         status = stat;

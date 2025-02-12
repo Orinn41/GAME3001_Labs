@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 837432988729555522}
   m_Layer: 0
   m_Name: Ship
-  m_TagString: Untagged
+  m_TagString: Ship
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -171,3 +171,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9f2f9ce8d02c84d91a806a2a27f9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridIndex: {x: 0, y: 0}
