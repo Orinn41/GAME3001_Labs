@@ -54,6 +54,7 @@ public class GridManager : MonoBehaviour
     {
         // Fill in for Lab 4 Part 1.
         BuildGrid();
+        ConnectGrid();
         //
         //
     }
@@ -89,9 +90,30 @@ public class GridManager : MonoBehaviour
     private void ConnectGrid()
     {
         // Fill in for Lab 4 Part 1.
-        //
-        //
-        //
+        for(int row = 0;row < rows; row++)
+        {
+            for(int col = 0; col < columns; col++)
+            {
+                TileScript tileScript = grid[row, col].GetComponent<TileScript>();
+                if(row > 0) // Set top neighbour if tile is not in the top row .
+                {
+                    tileScript.SetNeighbourTile((int)NeighbourTile.TOP_TILE, grid[row - 1,col]);
+                }
+                if(col < columns - 1) // set right neighbour if tile is not in the rightmost
+                {
+                    tileScript.SetNeighbourTile((int)NeighbourTile.RIGHT_TILE, grid[row, col + 1]);
+                }
+                if(row < rows - 1)// set bottom neighbour if tile is not in the bottom row 
+                {
+                    tileScript.SetNeighbourTile((int)NeighbourTile.BOTTOM_TILE, grid[row + 1, col]);
+                }
+                if(col >  0)// set left neighbour if tile is not  the  leftmost 
+                {
+                    tileScript.SetNeighbourTile((int)NeighbourTile.LEFT_TILE, grid[row, col - 1]);
+
+                }
+            }
+        }
     }
 
     public GameObject[,] GetGrid()
