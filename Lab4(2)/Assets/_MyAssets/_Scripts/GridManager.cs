@@ -24,9 +24,7 @@ public enum NeighbourTile
 public class GridManager : MonoBehaviour
 {
     // Fill in for Lab 4 Part 1.
-    //
-    //
-    //
+   
 
     public static GridManager Instance { get; private set; } // Static object of the class.
 
