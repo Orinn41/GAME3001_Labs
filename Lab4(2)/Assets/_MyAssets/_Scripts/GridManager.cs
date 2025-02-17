@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using UnityEngine;
 
 public enum TileStatus
@@ -34,6 +35,14 @@ public class GridManager : MonoBehaviour
     private GameObject minePrefab;
     [SerializeField]
     private Color[] colors;
+
+    [SerializeField]
+    bool useManhattanHeuristic = true;
+    [SerializeField]
+    float baseTileCost = 1f;
+
+
+
     private GameObject[,] grid;
     private int rows = 12;
     private int columns = 16;
@@ -72,6 +81,8 @@ public class GridManager : MonoBehaviour
             {
                 child.gameObject.SetActive(!child.gameObject.activeSelf);
             }
+
+            panelParent.SetActive(!panelParent.gameObject.activeSelf);
         }
         if(Input.GetKeyDown(KeyCode.M))
         {
@@ -132,6 +143,9 @@ public class GridManager : MonoBehaviour
         GameObject planet = GameObject.FindGameObjectWithTag("Planet");
         Vector2 planetIndicies = planet.GetComponent<NavigationObject>().GetGridIndex();
         grid[(int)planetIndicies.y, (int)planetIndicies.x].GetComponent<TileScript>().SetStatus(TileStatus.GOAL);
+
+
+        SetTileCost(planetIndicies);
     }
 
     private void ConnectGrid()
@@ -177,5 +191,35 @@ public class GridManager : MonoBehaviour
         float xPos = Mathf.Floor(worldPosition.x) + 0.5f;
         float yPos = Mathf.Floor(worldPosition.y) + 0.5f;
         return new Vector2(xPos, yPos);
+    }
+    public void SetTileCost(Vector2 targetIndicies)
+    {
+        float distance = 0f;
+        float dx = 0f;
+        float dy = 0f;
+
+        for (int row  = 0; row < rows; row++)
+        {
+            for (int col = 0; col < columns; col++)
+            {
+                TileScript tileScript = grid[row,col].GetComponent<TileScript>(); 
+                if(useManhattanHeuristic)
+                {
+                    dx = Mathf.Abs(col - targetIndicies.x);
+                    dy = Mathf.Abs (row - targetIndicies.y);
+                    distance = dx + dy;
+                }
+                else // euclian
+                {
+                    dx = targetIndicies.x - col;
+                    dy = targetIndicies.y - row;
+
+                    distance = Mathf.Sqrt(dx * dx + dy * dy);
+                }
+                float adjustedCost = distance * baseTileCost;
+                tileScript.cost = adjustedCost;
+                tileScript.tilePanel.costText.text = adjustedCost.ToString("F1");
+            }
+        }
     }
 }
