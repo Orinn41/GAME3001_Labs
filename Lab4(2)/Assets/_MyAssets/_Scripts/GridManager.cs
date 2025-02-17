@@ -27,6 +27,10 @@ public class GridManager : MonoBehaviour
     [SerializeField]
     private GameObject tilePrefab;
     [SerializeField]
+    private GameObject tilePanelPrefab;
+    [SerializeField]
+    private GameObject panelParent;
+    [SerializeField]
     private GameObject minePrefab;
     [SerializeField]
     private Color[] colors;
@@ -75,7 +79,7 @@ public class GridManager : MonoBehaviour
             GameObject mineInst = Instantiate(minePrefab, new Vector3(gridPosition.x, gridPosition.y, 0 ),Quaternion.identity);
             mineInst.GetComponent<NavigationObject>().SetGridIndex();
             Vector2 mineIndex = mineInst.GetComponent<NavigationObject>().GetGridIndex();
-            grid[(int)mineIndex.y, (int)mineIndex.x].GetComponent<TileScript>().ToggleImpassable(true);
+            grid[(int)mineIndex.y, (int)mineIndex.x].GetComponent<TileScript>().SetStatus(TileStatus.IMPASSABLE);
             mines.Add(mineInst);
         }
         if(Input.GetKeyDown(KeyCode.C))
@@ -83,7 +87,7 @@ public class GridManager : MonoBehaviour
             foreach(GameObject mine in mines)
             {
                 Vector2 mineIndex = mine.GetComponent<NavigationObject>().GetGridIndex();
-                grid[(int)mineIndex.y, (int)mineIndex.x].GetComponent<TileScript>().ToggleImpassable(false);
+                grid[(int)mineIndex.y, (int)mineIndex.x].GetComponent<TileScript>().SetStatus(TileStatus.UNVISITED);
                 Destroy(mine);
             }
             mines.Clear();
@@ -102,9 +106,21 @@ public class GridManager : MonoBehaviour
             for(int col = 0; col < columns; col++, colPos++)
             {
                 GameObject tileInst = GameObject.Instantiate(tilePrefab, new Vector3(colPos, rowPos, 0f), Quaternion.identity);
-                tileInst.GetComponent<TileScript>().SetColor(colors[System.Convert.ToInt32(count++ % 2 == 0 )]);
+                TileScript tileScript = tileInst.GetComponent<TileScript>();
+                tileScript.SetColor(colors[System.Convert.ToInt32(count++ % 2 == 0 )]);
                 tileInst.transform.parent = transform;
                 grid[row, col] = tileInst;
+
+                // instantiate a new tilePanel and link it to the tileInstance
+                GameObject tilePanelInst = Instantiate(tilePanelPrefab, tilePanelPrefab.transform.position, Quaternion.identity);
+                tilePanelInst.transform.parent = panelParent.transform;
+                RectTransform panelTransform = tilePanelInst.GetComponent<RectTransform>();
+                panelTransform.localScale = Vector3.one;
+                panelTransform.localPosition = new Vector3(64f * col, -64f * row);
+                tileScript.tilePanel = tilePanelInst.GetComponent<TilePanelScript>();
+                tileScript.tilePanel = tilePanelInst.GetComponent<TilePanelScript>();
+                tileScript.SetStatus(TileStatus.UNVISITED);
+
             }
             count--;
         }
