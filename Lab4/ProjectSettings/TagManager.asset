@@ -6,8 +6,8 @@ TagManager:
   tags:
   - Target
   - Mines
-  - Planet
   - Ship
+  - Planet
   layers:
   - Default
   - TransparentFX
