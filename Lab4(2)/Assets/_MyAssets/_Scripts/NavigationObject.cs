@@ -6,7 +6,7 @@ public class NavigationObject : MonoBehaviour
 {
     public Vector2 gridIndex;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         gridIndex = new Vector2();
         SetGridIndex();

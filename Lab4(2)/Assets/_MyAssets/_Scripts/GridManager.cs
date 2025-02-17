@@ -124,6 +124,14 @@ public class GridManager : MonoBehaviour
             }
             count--;
         }
+        // set tile under the ship to start 
+        GameObject ship = GameObject.FindGameObjectWithTag("Ship");
+        Vector2 shipIndicies = ship.GetComponent<NavigationObject>().GetGridIndex();
+        grid[(int)shipIndicies.y, (int)shipIndicies.x].GetComponent<TileScript>().SetStatus(TileStatus.START);
+        // set tile under the planet to goal 
+        GameObject planet = GameObject.FindGameObjectWithTag("Planet");
+        Vector2 planetIndicies = planet.GetComponent<NavigationObject>().GetGridIndex();
+        grid[(int)planetIndicies.y, (int)planetIndicies.x].GetComponent<TileScript>().SetStatus(TileStatus.GOAL);
     }
 
     private void ConnectGrid()

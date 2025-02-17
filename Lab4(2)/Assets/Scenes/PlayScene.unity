@@ -621,6 +621,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Planet
       objectReference: {fileID: 0}
+    - target: {fileID: 7429664672012497294, guid: 27e9559a357116b47afd7409e759ebe7, type: 3}
+      propertyPath: m_TagString
+      value: Planet
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -636,6 +640,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4350412689263730352, guid: f365dd11c3c60e948847b62a3097a15b, type: 3}
       propertyPath: m_Name
+      value: Ship
+      objectReference: {fileID: 0}
+    - target: {fileID: 4350412689263730352, guid: f365dd11c3c60e948847b62a3097a15b, type: 3}
+      propertyPath: m_TagString
       value: Ship
       objectReference: {fileID: 0}
     - target: {fileID: 4897056187513173748, guid: f365dd11c3c60e948847b62a3097a15b, type: 3}
