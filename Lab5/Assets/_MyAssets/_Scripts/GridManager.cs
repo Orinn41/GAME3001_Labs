@@ -99,6 +99,14 @@ public class GridManager : MonoBehaviour
             Vector2 planetIndicies = planet.GetComponent<NavigationObject>().GetGridIndex();
             PathNode goal = grid[(int)planetIndicies.y, (int)planetIndicies.x].GetComponent<TileScript>().Node;
             // start the algorithm for shorthest path to goal from start 
+            if (ship != null && planet != null && PathManager.Instance != null)
+            {
+                UnityEngine.Debug.Log("ship and planet is setted correctly");
+            }
+            else
+            {
+                UnityEngine.Debug.Log("ship or planet is not setted correctly");
+            }
             PathManager.Instance.GetShortestPath(start, goal);
 
         }
@@ -147,7 +155,7 @@ public class GridManager : MonoBehaviour
         SetTileCosts(planetIndices);
     }
 
-    private void ConnectGrid()
+    public void ConnectGrid()
     {
         for (int row = 0; row < rows; row++)
         {
@@ -240,7 +248,7 @@ public class GridManager : MonoBehaviour
     {
         foreach (GameObject go in grid)
         {
-            go.GetComponent<TileScript>().SetStatus(TileStatus.IMPASSABLE);
+            go.GetComponent<TileScript>().SetStatus(TileStatus.UNVISITED);
         }
         foreach (GameObject mine in mines)
         {

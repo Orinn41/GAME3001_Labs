@@ -1,12 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
+using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 
 public class PathNode
-{
-    public GameObject tile {  get; private set; }
-    public List<PathConnection> connections { get; private set; }
+{// getSmallestNode().node.tile
+    public GameObject tile { get; private set; }
+    public List<PathConnection> connections;
     public PathNode(GameObject tile)
     {
         this.tile = tile;
@@ -20,55 +19,51 @@ public class PathNode
 public class PathConnection
 {
     public PathNode fromNode { get; private set; }
-    public PathNode toNode { get; private set;}
-    public float cost { get; set; } // This is a new cost from tile  to tile we'll use distance between 
-    public PathConnection(PathNode from, PathNode to, float cost)
+    public PathNode toNode { get; private set; }
+    public float cost { get; set; } //this is a new cost from tile to tile. We'll use distance in units
+    public PathConnection(PathNode from, PathNode to, float cost = 1f)
     {
         fromNode = from;
         toNode = to;
         this.cost = cost;
     }
 }
-
 public class NodeRecord
 {
-    public PathNode node { get;  set; }
+    public PathNode node { get; set; }
     public NodeRecord fromRecord { get; set; }
-    public PathConnection pathconnection { get; set; }
+    public PathConnection pathConnection { get; set; }
     public float costSoFar { get; set; }
     public NodeRecord(PathNode node = null)
     {
         this.node = node;
-        pathconnection = null;
+        pathConnection = null;
         fromRecord = null;
-        costSoFar = 0;
+        costSoFar = 0f;
     }
-
-
 }
+
+
 public class PathManager : MonoBehaviour
 {
-    public List<NodeRecord> openList;
-    public List<NodeRecord> closeList;
-    // this is path we provide 
-    public List<PathConnection> path;
-
-    //----- singleton-----//
-    public static PathManager Instance {get; private set;} 
-    // Start is called before the first frame update
-    void Start()
+    public List<NodeRecord> openList, closeList;
+    public List<PathConnection> path; //the path we provide
+    //---------------Singleton-------------//
+    public static PathManager Instance { get; private set; }
+    void Awake()
     {
-        if (Instance == null) // if the object or the instance doesn't exist yet 
+        if (Instance == null)
         {
             Instance = this;
             Initialize();
         }
         else
         {
-            Destroy(gameObject); // destroying duplicated instances 
+            Destroy(gameObject);
         }
     }
-    private void Initialize()// --> singleton
+    //-------Singleton-------//
+    private void Initialize()
     {
         openList = new List<NodeRecord>();
         closeList = new List<NodeRecord>();
@@ -76,10 +71,10 @@ public class PathManager : MonoBehaviour
     }
     public void GetShortestPath(PathNode start, PathNode goal)
     {
-        if (path.Count >0)
+        if (path.Count > 0)
         {
-            // Clear up the path and grid 
-            // To Do : Clear tile status of grid 
+            // clear up the path and the grid
+            // TOD O: clear tile status of grid
             path.Clear();
         }
         NodeRecord currentRecord = null;
@@ -89,7 +84,7 @@ public class PathManager : MonoBehaviour
             currentRecord = GetSmallestNode();
             if (currentRecord.node == goal)
             {
-                // we found the goal !!!!
+                //we found the goal!
                 openList.Remove(currentRecord);
                 closeList.Add(currentRecord);
                 currentRecord.node.tile.GetComponent<TileScript>().SetStatus(TileStatus.CLOSED);
@@ -98,47 +93,44 @@ public class PathManager : MonoBehaviour
             List<PathConnection> connections = currentRecord.node.connections;
             for (int i = 0; i < connections.Count; i++)
             {
-                PathNode endNode = connections[i].toNode;
+                PathNode endNode = connections[i].toNode; //neighbour nodes
                 NodeRecord endNodeRecord;
-                float endNodeCost =  currentRecord.costSoFar + connections[i].cost;
-                if(ContainNode(closeList, endNode)) continue;
-                else if (ContainNode(openList, endNode))
+                float endNodeCost = currentRecord.costSoFar + connections[i].cost;
+                if (ContainsNode(closeList, endNode)) continue; // close means checked before
+                else if (ContainsNode(openList, endNode))
                 {
                     endNodeRecord = GetNodeRecord(openList, endNode);
-                    if (endNodeRecord.costSoFar <= endNodeCost)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        endNodeRecord = new NodeRecord();
-                        endNodeRecord.node = endNode;
-                    }
-                    endNodeRecord.costSoFar = endNodeCost;
-                    endNodeRecord.pathconnection = connections[i];
-                    endNodeRecord.fromRecord = currentRecord; // setting the chosen node s to current node
-                    if (!ContainNode(openList, endNode))
-                    {
-                        openList.Add(endNodeRecord);
-                        endNodeRecord.node.tile.GetComponent<TileScript>().SetStatus(TileStatus.CLOSED);
-                    }
+                    if (endNodeRecord.costSoFar <= endNodeCost) continue;
+                }
+                else
+                {
+                    endNodeRecord = new NodeRecord();
+                    endNodeRecord.node = endNode;
+                }
+                endNodeRecord.costSoFar = endNodeCost;
+                endNodeRecord.pathConnection = connections[i];
+                endNodeRecord.fromRecord = currentRecord; // setting the chosen node to current one
+                if (!ContainsNode(openList, endNode))
+                {
+                    openList.Add(endNodeRecord);
+                    endNodeRecord.node.tile.GetComponent<TileScript>().SetStatus(TileStatus.CLOSED);
                 }
             }
             openList.Remove(currentRecord);
             closeList.Add(currentRecord);
-            currentRecord.node.tile.GetComponent<TileScript>().SetStatus(TileStatus.CLOSED );
+            currentRecord.node.tile.GetComponent<TileScript>().SetStatus(TileStatus.CLOSED);
         }
         if (currentRecord == null) return;
         if (currentRecord.node != goal)
         {
-           UnityEngine.Debug.LogError("Cloudn't find the path to the goal");
+            Debug.LogError("Couldn't find path to goal!");
         }
         else
         {
-            UnityEngine.Debug.LogError("Found Path to the goal");
-            while(currentRecord.node != start)
+            Debug.Log("Found path to the goal!");
+            while (currentRecord.node != start)
             {
-                path.Add(currentRecord.pathconnection);
+                path.Add(currentRecord.pathConnection);
                 currentRecord.node.tile.GetComponent<TileScript>().SetStatus(TileStatus.PATH);
                 currentRecord = currentRecord.fromRecord;
             }
@@ -150,33 +142,33 @@ public class PathManager : MonoBehaviour
     public NodeRecord GetSmallestNode()
     {
         NodeRecord smallestNode = openList[0];
-        // Iterate trough the  rest  of the NodeRecords  int the list 
-        for (int i = 1; i  < openList.Count; i++)
+        //iterate through the rest of the NodeRecords in the list
+        for (int i = 1; i < openList.Count; i++)
         {
-            // if current nodeRecord has a smaller costSoFar than the smallestNode , update smallestNode    
+            //if the current NodeRecord has a smaller costSoFar, update the smallestNode
             if (openList[i].costSoFar < smallestNode.costSoFar)
             {
                 smallestNode = openList[i];
             }
-            // if they are same filp a coin its optional but looks better  for dijktra ai
-            else if (openList[i].costSoFar > smallestNode.costSoFar)
+            //if they are the same, flip a coin. it's optional but looks better for dijkstra ai
+            else if (openList[i].costSoFar == smallestNode.costSoFar)
             {
-                smallestNode = (Random.value < 0.5f ? openList[i] : smallestNode);
+                smallestNode = Random.value < 0.5f ? openList[i] : smallestNode;
             }
         }
         return smallestNode;
     }
-    public bool ContainNode(List<NodeRecord> list , PathNode node)
+    public bool ContainsNode(List<NodeRecord> list, PathNode node)
     {
-        foreach (NodeRecord record in list)
+        foreach (var record in list)
         {
             if (record.node == node) return true;
         }
         return false;
     }
-    public NodeRecord GetNodeRecord(List<NodeRecord> list , PathNode node)
+    public NodeRecord GetNodeRecord(List<NodeRecord> list, PathNode node)
     {
-        foreach (NodeRecord record in list)
+        foreach (var record in list)
         {
             if (record.node == node) return record;
         }
