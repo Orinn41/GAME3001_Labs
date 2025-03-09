@@ -10,7 +10,13 @@ public class TileScript : MonoBehaviour
     public TilePanelScript tilePanel; // Used for UI only.
     public TileStatus status = TileStatus.UNVISITED;
     public float cost = 999.9f;
-    
+    // New pathnode for pathfinding 
+    public PathNode Node { get; set; }
+    public void ResetNeighbourConnections()
+    {
+        neighbourTiles = new GameObject[4];
+        Node.connections.Clear(); 
+    }
     public void SetNeighbourTile(int index, GameObject tile)
     {
         neighbourTiles[index] = tile;
@@ -51,6 +57,10 @@ public class TileScript : MonoBehaviour
             case TileStatus.START:
                 gameObject.GetComponent<SpriteRenderer>().color = new Color(0f, 0.5f, 0f, 0.5f);
                 tilePanel.statusText.text = "S";
+                break;
+            case TileStatus.PATH:
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.5f);
+                tilePanel.statusText.text = "P";
                 break;
         }
     }
