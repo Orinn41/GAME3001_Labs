@@ -31,7 +31,7 @@ public class NavigationObject : MonoBehaviour
         source.layer = 3;
 
         // Create layermask for the ship
-        int layermask = -(1 << LayerMask.NameToLayer("Ignore Linecast"));
+        int layermask = ~(1 << LayerMask.NameToLayer("Ignore Linecast"));
 
         // cast a ray in the whisker direction
         RaycastHit2D hit = Physics2D.Raycast(transform.position, whiskerDirection, whiskerLength, layermask);
