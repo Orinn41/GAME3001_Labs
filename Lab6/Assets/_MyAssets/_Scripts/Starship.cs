@@ -96,30 +96,31 @@ public class Starship : AgentObject
     }
     // there are hidden commented COMMENTS LOOK CAREFULLY U ARE GONNA SEE THEM OPEN THEM (THEY ARE IN OTHER SCRIPTS TOO)
     // TODO: Comment out method for Lab 6a.
-/*    private void SeekForward() // A seek with rotation to target but only moving along forward vector.
-    {
-        // Calculate direction to the target.
-        Vector2 directionToTarget = (TargetPosition - transform.position).normalized;
+    /*    private void SeekForward() // A seek with rotation to target but only moving along forward vector.
+        {
+            // Calculate direction to the target.
+            Vector2 directionToTarget = (TargetPosition - transform.position).normalized;
 
-        // Calculate the angle to rotate towards the target.
-        float targetAngle = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg + 90.0f; // Note the +90 when converting from Radians.
+            // Calculate the angle to rotate towards the target.
+            float targetAngle = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg + 90.0f; // Note the +90 when converting from Radians.
 
-        // Smoothly rotate towards the target.
-        float angleDifference = Mathf.DeltaAngle(targetAngle, transform.eulerAngles.z);
-        float rotationStep = rotationSpeed * Time.deltaTime;
-        float rotationAmount = Mathf.Clamp(angleDifference, -rotationStep, rotationStep);
-        transform.Rotate(Vector3.forward, rotationAmount);
+            // Smoothly rotate towards the target.
+            float angleDifference = Mathf.DeltaAngle(targetAngle, transform.eulerAngles.z);
+            float rotationStep = rotationSpeed * Time.deltaTime;
+            float rotationAmount = Mathf.Clamp(angleDifference, -rotationStep, rotationStep);
+            transform.Rotate(Vector3.forward, rotationAmount);
 
-        // Move along the forward vector using Rigidbody2D.
-        rb.velocity = transform.up * movementSpeed;
-    }*/
+            // Move along the forward vector using Rigidbody2D.
+            rb.velocity = transform.up * movementSpeed;
+        }*/// OPEN HERE FOR COMMENTED OUT CODES 
 
     // TODO: Comment out method for Lab 6a.
-/*    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.tag == "Target")
+    /*    private void OnTriggerEnter2D(Collider2D other)
         {
-            GetComponent<AudioSource>().Play();
+            if (other.gameObject.tag == "Target")
+            {
+                GetComponent<AudioSource>().Play();
+            }
         }
-    }
-*/}
+    */// OPEN HERE FOR COMMENTED OUT CODES 
+}

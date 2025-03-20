@@ -203,7 +203,7 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-    }*/
+    }*/ // OPEN HERE FOR COMMENTED OUT CODES 
     // Comment out to here.
 
     public GameObject[,] GetGrid()
