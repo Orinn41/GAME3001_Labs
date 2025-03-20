@@ -14,21 +14,21 @@ public class Starship : AgentObject
     // [SerializeField] float avoidanceWeight;
     private Rigidbody2D rb;
     // TODO: Add NavigationObject reference for Lab 6a.
-    // 
-
+    NavigationObject no;
     new void Start() // Note the new.
     {
         base.Start(); // Explicitly invoking Start of AgentObject.
         Debug.Log("Starting Starship.");
         rb = GetComponent<Rigidbody2D>();
         // TODO: Populate NavigationObject reference for Lab 6a.
-        // 
+        no = GetComponent<NavigationObject>();  
     }
 
     void Update()
     {
         // TODO: Add new whisker and rotation behaviour for Lab 6a.
-        // 
+        bool hit = CastWhisker(whiskerAngle, Color.red);
+        transform.Rotate(0f, 0f, Input.GetAxis("Horizontal") + rotationSpeed * Time.deltaTime);
         // 
 
         // TODO: Commented out for Lab 6a.

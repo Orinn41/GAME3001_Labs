@@ -25,24 +25,43 @@ public class NavigationObject : MonoBehaviour
     }
 
     // TODO: Add for Lab 6a.
-    //public bool HasLOS(GameObject source, string targetTag, Vector2 whiskerDirection, float whiskerLength)
-    //{
-    //    
-    //    
+    public bool HasLOS(GameObject source, string targetTag, Vector2 whiskerDirection, float whiskerLength)
+    {
+        // Set the layer of the source to ignore Linecast
+        source.layer = 3;
 
-    //    
-    //    
+        // Create layermask for the ship
+        int layermask = -(1 << LayerMask.NameToLayer("Ignore Linecast"));
 
-    //    
-    //    
+        // cast a ray in the whisker direction
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, whiskerDirection, whiskerLength, layermask);
 
-    //    
-    //    
+        // Reset the source's layer
+        source.layer = 0;
 
-    //    
-    //    
-    //    
-    //    
-    //    
-    //}
+        if (hit.collider != null && hit.collider.CompareTag(targetTag))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
 }
