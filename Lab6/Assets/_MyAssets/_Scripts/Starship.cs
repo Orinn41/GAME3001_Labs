@@ -83,20 +83,20 @@ public class Starship : AgentObject
         Vector2 whiskerDirection = Quaternion.Euler(0, 0, angle) * transform.right;
 
         // TODO: Add for Lab 6a.
-        //
-        //
-        //
-        //
-        //
-        //
+        if (no.HasLOS(gameObject, "Planet", whiskerDirection, whiskerLength))
+        {
+            Debug.Log("Goal Detected");
+            rayColor = Color.green;
+            hitResult = true;
+        }
 
         // Debug ray visualization
         Debug.DrawRay(transform.position, whiskerDirection * whiskerLength, rayColor);
         return hitResult;
     }
-
+    // there are hidden commented COMMENTS LOOK CAREFULLY U ARE GONNA SEE THEM OPEN THEM (THEY ARE IN OTHER SCRIPTS TOO)
     // TODO: Comment out method for Lab 6a.
-    private void SeekForward() // A seek with rotation to target but only moving along forward vector.
+/*    private void SeekForward() // A seek with rotation to target but only moving along forward vector.
     {
         // Calculate direction to the target.
         Vector2 directionToTarget = (TargetPosition - transform.position).normalized;
@@ -112,14 +112,14 @@ public class Starship : AgentObject
 
         // Move along the forward vector using Rigidbody2D.
         rb.velocity = transform.up * movementSpeed;
-    }
+    }*/
 
     // TODO: Comment out method for Lab 6a.
-    private void OnTriggerEnter2D(Collider2D other)
+/*    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Target")
         {
             GetComponent<AudioSource>().Play();
         }
     }
-}
+*/}
