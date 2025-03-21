@@ -253,6 +253,8 @@ MonoBehaviour:
   - {r: 0, g: 0.2509804, b: 0.5019608, a: 0.5019608}
   baseTileCost: 1
   useManhattanHeuristic: 1
+  LOSToShip: 1
+  LOSToPlanet: 0
 --- !u!4 &571498480
 Transform:
   m_ObjectHideFlags: 0
@@ -402,7 +404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_target: {fileID: 1880279947}
-  rotationSpeed: 90
+  rotationSpeed: 0
   whiskerLength: 5
   whiskerAngle: 0
 --- !u!1 &1574120919

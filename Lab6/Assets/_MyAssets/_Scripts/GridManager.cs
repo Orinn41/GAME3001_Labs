@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 
 public enum TileStatus
@@ -38,6 +39,10 @@ public class GridManager : MonoBehaviour
     private List<GameObject> mines = new List<GameObject>();
 
     public static GridManager Instance { get; private set; } // Static object of the class.
+    [SerializeField]
+    bool LOSToShip;
+    [SerializeField]
+    bool LOSToPlanet;
 
     void Awake()
     {
@@ -109,6 +114,10 @@ public class GridManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R)) // Reset grid/pathfinding.
         {
             SetTileStatuses();
+        }
+        //if (Input.GetKeyDown(KeyCode.L))
+        {
+            CheckTileLOS();
         }
     }
 
@@ -266,5 +275,78 @@ public class GridManager : MonoBehaviour
         GameObject planet = GameObject.FindGameObjectWithTag("Planet");
         Vector2 planetIndices = planet.GetComponent<NavigationObject>().GetGridIndex();
         grid[(int)planetIndices.y, (int)planetIndices.x].GetComponent<TileScript>().SetStatus(TileStatus.GOAL);
+    }
+
+    public void CheckTileLOS()
+    {
+        if (!LOSToShip && !LOSToPlanet) // we are not checking for LOS so we reset tiles
+        {
+            foreach (GameObject go in grid)
+            {
+                if (go == null) continue;  // why because mines set a tile on the null . its a simple 2D grid 
+                go.GetComponent<SpriteRenderer>().color = Color.cyan;
+
+            }
+        }
+        else
+        {
+            GameObject player = GameObject.FindWithTag("Ship");
+            Vector3 shipPos = player.transform.position;
+            GameObject planet = GameObject.FindWithTag("Planet");
+            Vector3 planetPos = planet.transform.position;
+
+            foreach (GameObject go in grid)
+            {
+                if (go == null) continue;
+                Vector3 tilePos = go.transform.position;
+                bool hasLOSToShip = false;
+
+                if (LOSToShip)
+                {
+                    Vector3 direction = (shipPos - tilePos).normalized;
+                    hasLOSToShip = go.GetComponent<NavigationObject>().HasLOS(go, "Ship", direction, Vector3.Distance(tilePos, shipPos));
+                }
+                bool hasLOSToPlanet = false;
+                if (LOSToPlanet)
+                {
+                    Vector3 direction = (planetPos - tilePos).normalized;
+                    hasLOSToPlanet = go.GetComponent<NavigationObject>().HasLOS(go, "Planet", direction, Vector3.Distance(tilePos, planetPos));
+                }
+
+                if (LOSToShip && LOSToPlanet)
+                {
+                    if (hasLOSToShip && hasLOSToPlanet)
+                    {
+                        go.GetComponent<SpriteRenderer>().color = Color.green;
+                    }
+                    else
+                    {
+                        go.GetComponent<SpriteRenderer>().color = Color.red;
+                    }
+                }
+                else if (LOSToShip)
+                {
+                    if(hasLOSToShip)
+                    {
+                        go.GetComponent<SpriteRenderer>().color = Color.green;
+                    }
+                    else
+                    {
+                        go.GetComponent<SpriteRenderer>().color = Color.red;
+                    }
+                }
+                else if(LOSToPlanet)
+                {
+                    if (hasLOSToPlanet)
+                    {
+                        go.GetComponent<SpriteRenderer>().color = Color.green;
+                    }
+                    else
+                    {
+                        go.GetComponent<SpriteRenderer>().color = Color.red;
+                    }
+                }
+            }
+        }
     }
 }
