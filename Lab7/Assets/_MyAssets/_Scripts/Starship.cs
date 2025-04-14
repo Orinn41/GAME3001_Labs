@@ -22,7 +22,7 @@ public class Starship : AgentObject
     private int patrolIndex;
     [SerializeField] Transform testTarget;
 
-    new void Start() // Note the new.
+    new void Awake() // Note the new.
     {
         base.Start(); // Explicitly invoking Start of AgentObject.
         Debug.Log("Starting Starship.");

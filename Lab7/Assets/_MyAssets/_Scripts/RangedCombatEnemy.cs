@@ -10,6 +10,7 @@ public class RangedCombatEnemy : AgentObject
     Transform[] patrolPoints;
     [SerializeField]
     float pointRadius;
+    [SerializeField] float sensingRadius;
     [SerializeField] float movementSpeed; // TODO: Uncomment for Lab 7a.
     [SerializeField] float rotationSpeed;
     [SerializeField] float whiskerLength;
@@ -22,7 +23,7 @@ public class RangedCombatEnemy : AgentObject
     private int patrolIndex;
     [SerializeField] Transform testTarget;
 
-    new void Start() // Note the new.
+    new void Awake() // Note the new.
     {
         base.Start(); // Explicitly invoking Start of AgentObject.
         Debug.Log("Starting Starship.");
@@ -35,7 +36,7 @@ public class RangedCombatEnemy : AgentObject
 
     void Update()
     {
-        // bool hit = CastWhisker(whiskerAngle, Color.red);
+
         // transform.Rotate(0f, 0f, Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime);
 
         //if (TargetPosition != null)
@@ -46,8 +47,17 @@ public class RangedCombatEnemy : AgentObject
         //}
 
         // TODO: Add for Lab 7a. Add seek target for tree temporarily to planet.
-        dt.RadiusNode.IsWithinRadius = (Vector3.Distance(transform.position, testTarget.position) <= 3f);
-
+        dt.HealthNode.IsHealthy = true;
+        
+        dt.RadiusNode.IsWithinRadius = (Vector3.Distance(transform.position, testTarget.position) <= sensingRadius);
+        if(dt.RadiusNode.IsWithinRadius)
+        {
+            Vector2 direction = (testTarget.position - transform.position).normalized;
+            float angleInradians = Mathf.Atan2(direction.y, direction.x);
+            whiskerAngle = angleInradians * Mathf.Rad2Deg;
+            bool hit = CastWhisker(whiskerAngle, Color.red);
+            dt.LOSNode.hasLOS = hit;
+        }
         // TODO: Update for Lab 7a.
         dt.MakeDecision();
         switch(state)
@@ -99,7 +109,7 @@ public class RangedCombatEnemy : AgentObject
         Color rayColor = color;
 
         // Calculate the direction of the whisker.
-        Vector2 whiskerDirection = Quaternion.Euler(0, 0, angle) * transform.right;
+        Vector2 whiskerDirection = Quaternion.Euler(0, 0, angle) * Vector2.right;
 
         if (no.HasLOS(gameObject, "Planet", whiskerDirection, whiskerLength))
         {
@@ -165,7 +175,48 @@ public class RangedCombatEnemy : AgentObject
     // TODO: Fill in for Lab 7a.
     private void BuildTree()
     {
-        // Root condition node.
+        dt.HealthNode = new HealthCondition();
+        dt.treeNodeList.Add(dt.HealthNode);
+
+        // second level
+        TreeNode fleeNode = dt.AddNode(dt.HealthNode, new FleeAction(), TreeNodeType.LEFT_TREE_NODE);
+        ((ActionNode)fleeNode).SetAgent(gameObject, typeof(RangedCombatEnemy));
+        dt.treeNodeList.Add(fleeNode);
+
+        dt.HitNode = new HitCondition();
+        dt.treeNodeList.Add(dt.AddNode(dt.HealthNode, dt.HitNode, TreeNodeType.RIGHT_TREE_NODE));
+        // third level
+        dt.RadiusNode = new RadiusCondition();
+        dt.treeNodeList.Add(dt.AddNode(dt.HitNode, dt.RadiusNode, TreeNodeType.LEFT_TREE_NODE));
+
+        // Fourth level
+        TreeNode patrolNode = dt.AddNode(dt.RadiusNode, new PatrolAction(), TreeNodeType.LEFT_TREE_NODE);
+        ((ActionNode)patrolNode).SetAgent(this.gameObject, typeof(RangedCombatEnemy));
+        dt.treeNodeList.Add(patrolNode);
+       
+        dt.LOSNode = new LOSCondition();
+        dt.treeNodeList.Add(dt.AddNode(dt.RadiusNode, dt.LOSNode, TreeNodeType.RIGHT_TREE_NODE));
+
+        // Fifth Level
+        TreeNode MoveToLOSNode = dt.AddNode(dt.LOSNode, new MoveToLOSAction(), TreeNodeType.LEFT_TREE_NODE);
+        ((ActionNode)MoveToLOSNode).SetAgent(gameObject, typeof(RangedCombatEnemy));
+        dt.treeNodeList.Add(MoveToLOSNode);
+
+
+        dt.RangedCombatNode = new RangeCombatCondition();
+        dt.treeNodeList.Add(dt.AddNode(dt.LOSNode, dt.RangedCombatNode, TreeNodeType.RIGHT_TREE_NODE));
+
+        //Sixth level
+        TreeNode MovetoRangeNode = dt.AddNode(dt.RangedCombatNode, new MoveToRangeAction(), TreeNodeType.LEFT_TREE_NODE);
+        ((ActionNode)MovetoRangeNode).SetAgent(gameObject, typeof(RangedCombatEnemy));
+        dt.treeNodeList.Add(MovetoRangeNode);
+
+        //Attack!
+        TreeNode AttackNode = dt.AddNode(dt.RangedCombatNode, new AttackAction(), TreeNodeType.RIGHT_TREE_NODE);
+        ((ActionNode)AttackNode).SetAgent(gameObject, typeof(RangedCombatEnemy));
+        dt.treeNodeList.Add(AttackNode);
+
+/*        // Root condition node.
         dt.RadiusNode = new RadiusCondition();
         dt.treeNodeList.Add(dt.RadiusNode);
         
@@ -202,6 +253,6 @@ public class RangedCombatEnemy : AgentObject
 
         // AttackAction leaf.
         TreeNode AttackNode = dt.AddNode(dt.CloseCombatNode, new AttackAction(), TreeNodeType.RIGHT_TREE_NODE);
-        ((ActionNode)AttackNode).Agent = this.gameObject;
+        ((ActionNode)AttackNode).Agent = this.gameObject;*/
     }
 }

@@ -10,6 +10,7 @@ public class CloseCombatEnemy : AgentObject
     Transform[] patrolPoints;
     [SerializeField]
     float pointRadius;
+    [SerializeField] float sensingRadius;
     [SerializeField] float movementSpeed; // TODO: Uncomment for Lab 7a.
     [SerializeField] float rotationSpeed;
     [SerializeField] float whiskerLength;
@@ -31,11 +32,12 @@ public class CloseCombatEnemy : AgentObject
         // TODO: Add for Lab 7a.
         dt = new DecisionTree(this.gameObject);
         BuildTree();
+        patrolIndex = 0;
     }
 
     void Update()
     {
-        // bool hit = CastWhisker(whiskerAngle, Color.red);
+
         // transform.Rotate(0f, 0f, Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime);
 
         //if (TargetPosition != null)
@@ -46,8 +48,16 @@ public class CloseCombatEnemy : AgentObject
         //}
 
         // TODO: Add for Lab 7a. Add seek target for tree temporarily to planet.
-        dt.RadiusNode.IsWithinRadius = (Vector3.Distance(transform.position, testTarget.position) <= 3f);
-
+        dt.RadiusNode.IsWithinRadius = (Vector3.Distance(transform.position, testTarget.position) <= sensingRadius);
+        if (dt.RadiusNode.IsWithinRadius)
+        {
+            Vector2 direction = (testTarget.position - transform.position).normalized;
+            float angleInRadians = Mathf.Atan2(direction.y, direction.x);
+            whiskerAngle = angleInRadians * Mathf.Rad2Deg;
+            bool hit = CastWhisker(whiskerAngle, Color.red);
+            dt.LOSNode.hasLOS = hit;
+        }
+        
         // TODO: Update for Lab 7a.
         dt.MakeDecision();
         switch(state)
@@ -99,7 +109,7 @@ public class CloseCombatEnemy : AgentObject
         Color rayColor = color;
 
         // Calculate the direction of the whisker.
-        Vector2 whiskerDirection = Quaternion.Euler(0, 0, angle) * transform.right;
+        Vector2 whiskerDirection = Quaternion.Euler(0, 0, angle) * Vector2.right;
 
         if (no.HasLOS(gameObject, "Planet", whiskerDirection, whiskerLength))
         {
@@ -174,7 +184,7 @@ public class CloseCombatEnemy : AgentObject
 
         // PatrolAction leaf.
         TreeNode patrolNode = dt.AddNode(dt.RadiusNode, new PatrolAction(), TreeNodeType.LEFT_TREE_NODE);
-        ((ActionNode)patrolNode).Agent = this.gameObject;
+        ((ActionNode)patrolNode).SetAgent(this.gameObject,typeof(CloseCombatEnemy));
         dt.treeNodeList.Add(patrolNode);
 
         // LOSCondition node.
@@ -185,7 +195,7 @@ public class CloseCombatEnemy : AgentObject
 
         // MoveToLOSAction leaf.
         TreeNode MoveToLOSNode = dt.AddNode(dt.LOSNode, new MoveToLOSAction(), TreeNodeType.LEFT_TREE_NODE);
-        ((ActionNode)MoveToLOSNode).Agent = this.gameObject;
+        ((ActionNode)MoveToLOSNode).SetAgent(this.gameObject,typeof(CloseCombatEnemy));
         dt.treeNodeList.Add(MoveToLOSNode);
 
         // CloseCombatCondition node.
@@ -197,11 +207,11 @@ public class CloseCombatEnemy : AgentObject
 
         // MoveToPlayerAction leaf.
         TreeNode MoveToPlayerNode = dt.AddNode(dt.CloseCombatNode, new MoveToPlayerAction(), TreeNodeType.LEFT_TREE_NODE);
-        ((ActionNode)MoveToPlayerNode).Agent = this.gameObject;
+        ((ActionNode)MoveToPlayerNode).SetAgent(this.gameObject, typeof(CloseCombatEnemy));
         dt.treeNodeList.Add(MoveToPlayerNode);
 
         // AttackAction leaf.
         TreeNode AttackNode = dt.AddNode(dt.CloseCombatNode, new AttackAction(), TreeNodeType.RIGHT_TREE_NODE);
-        ((ActionNode)AttackNode).Agent = this.gameObject;
+        ((ActionNode)AttackNode).SetAgent(this.gameObject, typeof(CloseCombatEnemy));
     }
 }
