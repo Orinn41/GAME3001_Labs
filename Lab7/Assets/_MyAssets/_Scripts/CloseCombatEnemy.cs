@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Starship : AgentObject
+public class CloseCombatEnemy : AgentObject
 {
     // TODO: Add for Lab 7a.
     [SerializeField]

@@ -19,6 +19,7 @@ public class PatrolAction : ActionNode
             Starship ss = Agent.GetComponent<Starship>();
             ss.state = ActionState.PATROL;
             // custom enter actions 
+            ss.StartPatrol();
         }
         //everyframe
         Debug.Log("Performing" + name);
