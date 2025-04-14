@@ -13,13 +13,20 @@ public class PatrolAction : ActionNode
     public override void Action()
     {
         //enter functionality for action
-        if (Agent.GetComponent<Starship>().state != ActionState.PATROL)
+        if (Agent.GetComponent<AgentObject >().state != ActionState.PATROL)
         {
             Debug.Log("starting " + name);
-            Starship ss = Agent.GetComponent<Starship>();
-            ss.state = ActionState.PATROL;
+            AgentObject ao = Agent.GetComponent<AgentObject>();
+            ao.state = ActionState.PATROL;
             // custom enter actions 
-            ss.StartPatrol();
+            if(AgentScript is CloseCombatEnemy cce)
+            {
+                cce.StartPatrol();
+            }
+            else if (AgentScript is RangedCombatEnemy rce)
+            {
+                rce.StartPatrol();
+            }
         }
         //everyframe
         Debug.Log("Performing" + name);

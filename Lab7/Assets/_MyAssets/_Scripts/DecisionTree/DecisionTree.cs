@@ -9,6 +9,9 @@ public class DecisionTree
     public LOSCondition LOSNode { get; set; }
     public RadiusCondition RadiusNode { get; set; }
     public CloseCombatCondition CloseCombatNode { get; set; }
+    public HealthCondition HealthNode { get; set; } 
+    public HitCondition HitNode { get; set; }  
+    public RangeCombatCondition RangedCombatNode { get; set; }
 
     public List<TreeNode> treeNodeList;
 
